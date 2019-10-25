@@ -85,7 +85,7 @@ def info_test(questions):
     for i in range(0, max(quest)):
         stat.append(trues.count(i))
         # print(i, trues.count(i)) # 2165
-    print('Count of answers')
+    print('Count of answers: ', len(questions))
     
     for i, s in enumerate(stat):
         if i == 0: letter = 'A'
@@ -109,7 +109,7 @@ def info_test(questions):
     # print(variants)
 
 
-print('Hello! Your question: (\'q\' to quit, \'t\' - print true answer, \'i\' - print info about test ')
+print('Hello! Your question: (\'q\' to quit, \'t\' - print true answer, \'i\' - print info about test) \n')
 printQuestion(questions)
  
 # print(true_answer(questions, 0))
