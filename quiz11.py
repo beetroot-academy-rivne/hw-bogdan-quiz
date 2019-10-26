@@ -5,16 +5,21 @@ with open('questions.json') as file:
     data = file.read()
     questions = json.loads(data)
 answered_questions = list()
+
 def get_question_index(questions):
     curr = randint(0, len(questions)-1)
-    while curr in answered_questions:
+    if answered_questions == []:
+        for i in range(0, len(questions)):
+            answered_questions.append(0)
+        
+    while True:
         curr = randint(0, len(questions)-1)
         if answered_questions.count(2) == len(questions):
             print('Questions is over')
             exit()
-    if answered_questions == []:
-        for i in range(0, len(questions)):
-            answered_questions.append(0)
+        if answered_questions[curr] == 0:
+            break
+    
         
     answered_questions[curr] = 1 # 1 - in progress, 2 - true
     return(curr)
