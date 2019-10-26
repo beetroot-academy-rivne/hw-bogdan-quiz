@@ -4,9 +4,25 @@ import json
 with open('questions.json') as file:
     data = file.read()
     questions = json.loads(data)
+answered_questions = list()
+def get_question_index(questions):
+    curr = randint(0, len(questions)-1)
+    while curr in answered_questions:
+        curr = randint(0, len(questions)-1)
+        if answered_questions.count(2) == len(questions):
+            print('Questions is over')
+            exit()
+    if answered_questions == []:
+        for i in range(0, len(questions)):
+            answered_questions.append(0)
+        
+    answered_questions[curr] = 1 # 1 - in progress, 2 - true
+    return(curr)
+
 
 def printQuestion(questions):
-    curr = randint(0, len(questions)-1)
+    curr = get_question_index(questions)
+    print(answered_questions)
     failed = True
     print_question = False
     print(questions[curr]['content'])
@@ -29,6 +45,7 @@ def printQuestion(questions):
             failed = False
         else:
             print('Wrong result, try again?')
+    answered_questions[curr] = 2
     print('Success! Type \'y\' to more one question, anything to exit: ', end='')
     ans = input()        
     if ans == 'y':
@@ -106,7 +123,13 @@ def info_test(questions):
         else: letter = 'other'
         print(letter+':'+str(s),'   ', end='')   
     print()
-    # print(variants)
+    print()
+    print('Answered questions: ')
+    for i, ans in enumerate(answered_questions):
+        if ans == 1:
+            print(i, 'in progress')
+        elif ans == 2:
+            print(i, 'answered true')
 
 
 print('Hello! Your question: (\'q\' to quit, \'t\' - print true answer, \'i\' - print info about test) \n')
