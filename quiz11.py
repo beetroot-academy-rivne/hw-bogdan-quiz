@@ -5,12 +5,11 @@ with open('questions.json') as file:
     data = file.read()
     questions = json.loads(data)
 answered_questions = list()
-
+for i in range(0, len(questions)):
+    answered_questions.append(0)
 def get_question_index(questions):
     curr = randint(0, len(questions)-1)
-    if answered_questions == []:
-        for i in range(0, len(questions)):
-            answered_questions.append(0)
+    
         
     while True:
         curr = randint(0, len(questions)-1)
@@ -27,10 +26,11 @@ def get_question_index(questions):
 
 
 
-def printQuestion(questions):
+def printQuestion(questions, answered_questions):
     curr = get_question_index(questions)
     failed = True
     print_question = False
+    print(answered_questions)
     print(questions[curr]['content'])
     for i, var in enumerate(questions[curr]['choices']):
         print(str(i)+ ": ", var['content'])
@@ -38,7 +38,7 @@ def printQuestion(questions):
         if print_question:
             print('True answer for', curr, 'question:',true_answer(questions, curr))
         print("Your answer: ", end='')
-        ans, index = get_input(questions, curr, ['q', 't', 'i'])
+        ans, index = get_input(questions, curr, ['q', 't', 'i', 's', 'l'])
         # print(f'Your answer:{ans}')
         if ans == 'q':
             exit()
@@ -46,16 +46,27 @@ def printQuestion(questions):
             print_question = True
             # print(true_answer(questions, curr))
         elif ans == 'i':
-            info_test(questions)
+            info_test(questions, answered_questions)
+        elif ans == 's':
+            print('Result saved to result.dat')
+            filename = 'results.json'
+            save_result(answered_questions, filename)
+        elif ans == 'l':
+            print('Loading from result.dat')
+            filename = 'results.json'
+            answered_questions = load_result(filename)
+            printQuestion(questions, answered_questions)
         elif questions[curr]['choices'][index]['is_correct']:
             failed = False
         else:
             print('Wrong result, try again?')
-    answered_questions[curr] = 2
+            answered_questions[curr] = 3
+    if answered_questions[curr] == 3:
+        answered_questions[curr] = 2
     print('Success! Type \'y\' to more one question, anything to exit: ', end='')
     ans = input()        
     if ans == 'y':
-        printQuestion(questions)
+        printQuestion(questions, answered_questions)
     else:
         exit()
 
@@ -86,7 +97,7 @@ def true_answer(questions, question):
     for var in questions[question]['choices']:
         if var['is_correct']:
             return(var['content'][1])
-def info_test(questions):
+def info_test(questions, answered_questions):
     quest = list()
 
     variants = [0,0,0,0,0]
@@ -118,14 +129,25 @@ def info_test(questions):
     for i, s in enumerate(stat):
         letter = get_letter(i)
         print(letter+':'+str(s),'   ', end='')   
-    print()
-    print()
+    print('\n')
+    
     print('Answered questions: ')
+    true_answers = 0
+    false_answers = 0
+    answered = 0
     for i, ans in enumerate(answered_questions):
         if ans == 1:
             print(i, 'in progress')
         elif ans == 2:
             print(i, 'answered true')
+            true_answers +=1
+            answered +=1
+
+        elif ans == 3:
+            print(i, 'answered false')
+            false_answers +=1
+            answered +=1
+    print('Answered true: ', true_answers,': ' ,str(int(100*(true_answers / answered)))+'%','\nAnswered false:', false_answers, ':', str(int(100*(false_answers / answered)))+'%')
 
 def get_letter(i):
     if i == 0: letter = 'A'
@@ -135,8 +157,21 @@ def get_letter(i):
     elif i == 4: letter = 'Д'
     else: letter = 'other'
     return letter
-print('Hello! Your question: (\'q\' to quit, \'t\' - print true answer, \'i\' - print info about test) \n')
-printQuestion(questions)
+def save_result(answered_questions, filename):
+    with open(filename, 'w') as f:
+        json.dump(answered_questions, f)
+def load_result(filename):
+    with open(filename) as f:
+        answered_questions = json.load(f)
+   
+  
+    return(answered_questions)
+            
+print('Hello! Your question: (\'q\' to quit, \'t\' - print true answer, \'i\' - print info about test, \'s\' - save result, \'l\' - load result.dat) \n')
+
+printQuestion(questions, answered_questions)
+# save_result(answered_questions, 'results.dat')
+# load_result('results.dat')
  
 # print(true_answer(questions, 0))
 
