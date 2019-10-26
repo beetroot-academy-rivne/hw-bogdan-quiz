@@ -15,6 +15,7 @@ def get_question_index(questions):
     while True:
         curr = randint(0, len(questions)-1)
         if answered_questions.count(2) == len(questions):
+
             print('Questions is over')
             exit()
         if answered_questions[curr] == 0:
@@ -25,9 +26,9 @@ def get_question_index(questions):
     return(curr)
 
 
+
 def printQuestion(questions):
     curr = get_question_index(questions)
-    print(answered_questions)
     failed = True
     print_question = False
     print(questions[curr]['content'])
@@ -110,22 +111,12 @@ def info_test(questions):
     print('Count of answers: ', len(questions))
     
     for i, s in enumerate(stat):
-        if i == 0: letter = 'A'
-        elif i == 1: letter = 'Б'
-        elif i == 2: letter = 'В'
-        elif i == 3: letter = 'Г'
-        elif i == 4: letter = 'Д'
-        else: letter = 'other'    
-        # print(letter+str(stat[i]), end='')
+        letter = get_letter(i)
+
         print(letter+':'+ str(int(100*s/len(questions)))+ '%   ', end='')
     print()    
     for i, s in enumerate(stat):
-        if i == 0: letter = 'A'
-        elif i == 1: letter = 'Б'
-        elif i == 2: letter = 'В'
-        elif i == 3: letter = 'Г'
-        elif i == 4: letter = 'Д'
-        else: letter = 'other'
+        letter = get_letter(i)
         print(letter+':'+str(s),'   ', end='')   
     print()
     print()
@@ -136,7 +127,14 @@ def info_test(questions):
         elif ans == 2:
             print(i, 'answered true')
 
-
+def get_letter(i):
+    if i == 0: letter = 'A'
+    elif i == 1: letter = 'Б'
+    elif i == 2: letter = 'В'
+    elif i == 3: letter = 'Г'
+    elif i == 4: letter = 'Д'
+    else: letter = 'other'
+    return letter
 print('Hello! Your question: (\'q\' to quit, \'t\' - print true answer, \'i\' - print info about test) \n')
 printQuestion(questions)
  
