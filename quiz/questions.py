@@ -15,13 +15,14 @@ def get_random_question():
 	questions = read_from_file()
 	curr = randint(0, len(questions)-1)
 	# print(questions[curr])
-	for f in questions:
-		print (f['id'])
+	# for f in questions:s
 	return(Question(questions[curr]))
 class Question:
 	def __init__(self, curr):
-		self.id =  441# curr['id'] 181
+		self.id =  curr['id'] 
 		self.curr = curr
+		self.content = curr['content']
+		self.choices = curr['choices']
 		self.answered_questions = list()
 		self.questions = read_from_file()
 		self.get_questions()
@@ -29,10 +30,8 @@ class Question:
 	def get_questions(self):
 		pass	
 	def print(self):
-		print(self.id, self.curr, '\n')
-		print(181, self.curr, '\n')
-		print(self.questions[self.id]['content'])
+		print(self.content)
 
-		# for i, item in enumerate(self.questions[self.id]['choices']):
-			# print(i, item)
-			# print(str(i)+':', item['content'])
+		for i, item in enumerate(self.choices):
+			# print(i, item)s
+			print(str(i)+':', item['content'])
