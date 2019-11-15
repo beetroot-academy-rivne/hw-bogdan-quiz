@@ -34,4 +34,4 @@ class Question:
 
 		for i, item in enumerate(self.choices):
 			# print(i, item)s
-			print(str(i)+':', item['content'])
+			print(str(i+1)+':', item['content'])
