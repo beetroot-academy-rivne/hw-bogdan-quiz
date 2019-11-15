@@ -1,5 +1,6 @@
 
 def input_answer(question):
+	error = False
 	expected_values = list()
 	letter = {'А': 1, 'Б':2, 'В': 3, 'Г': 4, 'Д': 5}
 
@@ -13,20 +14,23 @@ def input_answer(question):
 	
 	ans  = input('Enter your choice: ').upper().strip()
 	result = False
-	print(expected_values)
-	if ans in expected_values:
+	if ans not in expected_values:
+		error = True
+
+
+	elif ans in expected_values:
 		if ans.isalpha():		
 			# print(ans)
 			ans = letter[ans]
 		# print(ans)
 		result = '+++'
 	# print(question.choices)
-	return Answer(question, ans)
+	if not error:
+		return Answer(question, ans)
+
 class Answer:
 	def __init__(self, question, ans):
 		self.question = question
 		self.answer = ans
-		print(type(self.answer))
 	def verify(self, question, ans):
-		print(self.answer)
 		return question.choices[int(self.answer)-1]['is_correct']

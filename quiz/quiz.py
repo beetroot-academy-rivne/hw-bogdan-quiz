@@ -8,16 +8,21 @@ from answers import input_answer
 
 
 def run_quiz():
-	question = get_random_question()
-	question.print()	
+	
+	while True:
+		question = get_random_question()
+		question.print()	
 
-	answer = input_answer(question)
-	print('ans,', answer)
-	if answer.verify(question, answer):
-		print('success')
-	else: 
-		print('false')
-	print(answer)
+		while True:
+			answer = input_answer(question)	
+			if not answer:
+				print('Unexpected value, try again!')
+			elif answer.verify(question, answer):
+				print('True')
+				break
+			else: 
+				print('False')
+
 	# answer.verify()
 	# answer.display()
 
